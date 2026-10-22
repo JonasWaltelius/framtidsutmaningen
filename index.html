@@ -36,12 +36,6 @@
                     <p class="text-xs text-slate-400">Spelet om Hållbar Utveckling</p>
                 </div>
             </div>
-
-            <!-- JORDKLOT-RÄKNARE -->
-            <div id="footprint-pill" class="hidden sm:flex items-center gap-2 bg-slate-800/80 border border-slate-700 px-3 py-1.5 rounded-full text-xs font-semibold text-slate-300">
-                <i class="fa-solid fa-globe text-emerald-400"></i>
-                <span>Fotavtryck: <strong id="footprint-val" class="text-emerald-400 font-bold">4.0</strong> Jordklot</span>
-            </div>
         </div>
     </header>
 
@@ -86,7 +80,6 @@
             <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-4 shadow-xl space-y-3">
                 <div class="flex justify-between items-center text-xs font-bold text-slate-400">
                     <span id="scenario-step-text">Scenario 1 av 5</span>
-                    <span class="sm:hidden text-emerald-400" id="footprint-mobile">4.0 Jordklot</span>
                 </div>
 
                 <div class="grid grid-cols-3 gap-3">
@@ -150,7 +143,7 @@
 
                 <!-- OPTIONS CONTAINER (SIDE-BY-SIDE / HORIZONTAL GRID) -->
                 <div id="options-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 pt-2 items-stretch">
-                    <!-- Dynamiskt innehåll i samma höjd bredvid varandra -->
+                    <!-- Dynamiskt innehåll -->
                 </div>
             </div>
 
@@ -295,6 +288,7 @@
                         pros: "Skapar nya bostäder i kommunen snabbt",
                         cons: "Minskar ytan där vi kan odla mat",
                         ecoDelta: -20, econDelta: +15, socDelta: +15,
+                        fpDelta: +0.4,
                         feedback: "Att bygga på åkermark ger bostäder och ekonomisk tillväxt, men förstör obrukbar jordbruksmark vilket försvårar matförsörjningen.",
                         fact: "I Skåne och Östergötland försvinner mycket bördig åkermark varje år trots beslut om skydd.",
                         choiceText: "Byggde nya bostäder på bördig åkermark."
@@ -304,6 +298,7 @@
                         pros: "Bevarar matproduktionen och den biologiska mångfalden",
                         cons: "Det blir dyrare och svårare att bygga inne i staden",
                         ecoDelta: +15, econDelta: -10, socDelta: -5,
+                        fpDelta: -0.4,
                         feedback: "Att skydda matjorden säkrar ekologin, men att förtäta staden gör bostadsbyggandet dyrare och tar längre tid.",
                         fact: "Sverige importerar mycket mat. Att bevara jordbruksmark stärka vår egen självförsörjning.",
                         choiceText: "Bevarade åkermarken och valde att förtäta staden istället."
@@ -323,6 +318,7 @@
                         pros: "Välkänt och gott bland många",
                         cons: "Ger höga utsläpp och stor vattenförbrukning",
                         ecoDelta: -20, econDelta: -5, socDelta: +10,
+                        fpDelta: +0.4,
                         feedback: "Kött gillas av många elever, men uppfödning av boskap kräver mycket mark och vatten samt ger växthusgaser.",
                         fact: "Det går åt ca 15 000 liter vatten för att producera 1 kg nötkött.",
                         choiceText: "Behöll köttdominerad meny i matsalen."
@@ -332,6 +328,7 @@
                         pros: "Minskar utsläpp och sparar jättemycket vatten",
                         cons: "En del elever kan bli missnöjda i början",
                         ecoDelta: +20, econDelta: +10, socDelta: -5,
+                        fpDelta: -0.4,
                         feedback: "Vegetarisk mat minskar det ekologiska fotavtrycket kraftigt och sparar dessutom pengar för skolan.",
                         fact: "Växtbaserad mat kräver betydligt mindre mark och vatten än köttproduktion.",
                         choiceText: "Satsade på vegetarisk mat som standard i matsalen."
@@ -341,6 +338,7 @@
                         pros: "Ett mellanting av A+B",
                         cons: "Miljön drabbas fortfarande och köttälskarna klagar",
                         ecoDelta: 0, econDelta: +5, socDelta: 0,
+                        fpDelta: 0.0,
                         feedback: "Att dela upp menyn 50/50 är en kompromiss. Miljöpåverkan minskar något, men förändringen blir mindre märkbar för planeten.",
                         fact: "Kompromisser kan göra det lättare för alla att acceptera förändringar stegvis.",
                         choiceText: "Valde att dela upp menyn 50/50 mellan vegetariskt och kött."
@@ -360,6 +358,7 @@
                         pros: "Alla får alltid ny och snabb teknik",
                         cons: "Alla får inte den senaste modellen och det skapar elavfall",
                         ecoDelta: -15, econDelta: -15, socDelta: +15,
+                        fpDelta: +0.4,
                         feedback: "Nybryggda datorer ger goda förutsättningar för studier, men ökar metallbrytningen och avfallsmängden.",
                         fact: "Elektronik innehåller sällsynta metaller som ofta bryts under svåra arbetsförhållanden.",
                         choiceText: "Köpte in nya Chromebooks regelbundet till alla."
@@ -369,6 +368,7 @@
                         pros: "Minskar brytning av metaller och sparar pengar",
                         cons: "Vissa datorer kan bli långsammare med tiden",
                         ecoDelta: +15, econDelta: +10, socDelta: -5,
+                        fpDelta: -0.4,
                         feedback: "Att laga och behålla Chromebooks längre sparar på resurserna och minskar elavfallet.",
                         fact: "Mängden elavfall i världen ökar snabbt. Reparation är ett viktigt steg uppåt i avfallstrappan.",
                         choiceText: "Satsade på att reparera och återanvända Chromebooks längre."
@@ -378,6 +378,7 @@
                         pros: "Minskar brytning av metaller och avfall",
                         cons: "Vi hamnar efter i utveckling och måste använda annat material",
                         ecoDelta: +20, econDelta: -10, socDelta: -15,
+                        fpDelta: 0.0,
                         feedback: "Att helt ta bort datorer minskar den ekologiska belastningen men försvårar den digitala undervisningen.",
                         fact: "Digital kompetens ingår i läroplanen, vilket gör valet till en tydlig målkonflikt.",
                         choiceText: "Slutade helt med Chromebooks i skolan."
@@ -397,6 +398,7 @@
                         pros: "Billigt för stunden och upplevs som trendigt",
                         cons: "Förbrukar enormt mycket osynligt (virtuellt) vatten",
                         ecoDelta: -20, econDelta: -5, socDelta: +5,
+                        fpDelta: +0.4,
                         feedback: "Billiga snabba klädköp slösar på vattenresurser i länder som ofta redan har vattenbrist.",
                         fact: "Det går åt ca 2 500 liter vatten för att tillverka en enda t-shirt.",
                         choiceText: "Kände för billigt nyköp av kläder (Fast Fashion)."
@@ -406,6 +408,7 @@
                         pros: "Sparar jättemycket vatten och minskar avfall",
                         cons: "Svårt att hitta och ganska slitet",
                         ecoDelta: +20, econDelta: +10, socDelta: 0,
+                        fpDelta: -0.4,
                         feedback: "Att köpa begagnat eller laga plagg minskar det ekologiska fotavtrycket direkt, även om det kan kräva mer letande.",
                         fact: "Att förlänga ett plaggs livslängd med det dubbla minskar dess klimatpåverkan med nästan hälften.",
                         choiceText: "Satsade på Second Hand och att laga befintliga kläder."
@@ -415,6 +418,7 @@
                         pros: "Du får nya kläder och sparar på produktion",
                         cons: "Fortsatt nyproduktion och begränsat urval",
                         ecoDelta: +5, econDelta: 0, socDelta: -5,
+                        fpDelta: 0.0,
                         feedback: "Ett tak på nyköp begränsar den värsta överkonsumtionen men tillåter fortfarande viss nyproduktion.",
                         fact: "Konsumtionsbegränsningar sänker avtrycket utan att stoppa handeln helt.",
                         choiceText: "Begränsade nya klädinköp till max tre plagg per person och månad."
@@ -434,6 +438,7 @@
                         pros: "Materialet kan användas igen till nya produkter",
                         cons: "Kräver sortering och transport",
                         ecoDelta: +15, econDelta: +5, socDelta: +5,
+                        fpDelta: -0.4,
                         feedback: "Materialåtervinning sparar råvaror och energi jämfört med att utvinna helt nya resurser.",
                         fact: "Steg 3 i Avfallstrappan innebär materialåtervinning när saker inte kan återanvändas.",
                         choiceText: "Sopsorterade och återvann materialet."
@@ -443,6 +448,7 @@
                         pros: "Ge energi och värme till bostäder",
                         cons: "Skapar stora utsläpp",
                         ecoDelta: -5, econDelta: +10, socDelta: +5,
+                        fpDelta: 0.0,
                         feedback: "Energiutvinning ger värme, men förbränning ger utsläpp och materialet går förlorat för framtiden.",
                         fact: "Energiutvinning ligger på steg 4 i Avfallstrappan, under återanvändning och återvinning.",
                         choiceText: "Skickade avfallet till förbränning för energiutvinning."
@@ -452,6 +458,7 @@
                         pros: "Enkelt och billigt på kort sikt",
                         cons: "Förstör miljön och slösar bort alla resurser",
                         ecoDelta: -25, econDelta: -10, socDelta: -10,
+                        fpDelta: +0.4,
                         feedback: "Deponi på soptipp är det sämsta alternativet i Avfallstrappan och läcker ofta giftiga ämnen.",
                         fact: "Deponering ligger längst ner på Avfallstrappan och ska i största möjliga mån undvikas.",
                         choiceText: "Slängde avfallet på soptippen (deponi)."
@@ -464,17 +471,23 @@
         let ecoScore = 50;
         let econScore = 50;
         let socScore = 50;
+        let footprintVal = 4.0;
         let playerChoices = [];
+        let optionSelectedInCurrentScenario = false;
 
         function startGame() {
             document.getElementById('start-screen').classList.add('hidden');
+            document.getElementById('summary-screen').classList.add('hidden');
             document.getElementById('game-screen').classList.remove('hidden');
-            document.getElementById('footprint-pill').classList.remove('hidden');
+            
+            // Återställ alltid till exakt startläge (4.0 jordklot)
             currentScenarioIndex = 0;
             ecoScore = 50;
             econScore = 50;
             socScore = 50;
+            footprintVal = 4.0;
             playerChoices = [];
+            
             updateUI();
             loadScenario();
         }
@@ -493,12 +506,11 @@
             document.getElementById('soc-val').innerText = socScore + "%";
             document.getElementById('soc-bar').style.width = socScore + "%";
 
-            let footprint = (8.0 - (ecoScore / 100) * 4.0).toFixed(1);
-            document.getElementById('footprint-val').innerText = footprint;
-            document.getElementById('footprint-mobile').innerText = footprint + " Jordklot";
+            footprintVal = Math.max(2.0, Math.min(6.0, footprintVal));
         }
 
         function loadScenario() {
+            optionSelectedInCurrentScenario = false;
             document.getElementById('feedback-panel').classList.add('hidden');
             
             const sc = scenarios[currentScenarioIndex];
@@ -512,15 +524,14 @@
             const container = document.getElementById('options-container');
             container.innerHTML = '';
 
-            // Dynamic grid cols depending on number of options (2 or 3)
             const gridColsClass = sc.options.length === 2 ? 'sm:grid-cols-2' : 'sm:grid-cols-3';
             container.className = `grid grid-cols-1 ${gridColsClass} gap-3 pt-2 items-stretch`;
 
             sc.options.forEach((opt, idx) => {
                 const letter = String.fromCharCode(65 + idx);
                 const btn = document.createElement('button');
-                btn.className = "w-full text-left bg-slate-950/80 hover:bg-slate-800 border border-slate-800 hover:border-slate-700 p-3 md:p-4 rounded-xl transition active:scale-[0.99] flex flex-col justify-between h-full space-y-2";
-                btn.onclick = () => selectOption(opt);
+                btn.className = "option-btn w-full text-left bg-slate-950/80 hover:bg-slate-800 border border-slate-800 hover:border-slate-700 p-3 md:p-4 rounded-xl transition active:scale-[0.99] flex flex-col justify-between h-full space-y-2";
+                btn.onclick = () => selectOption(opt, btn);
 
                 btn.innerHTML = `
                     <div class="space-y-1.5">
@@ -538,10 +549,24 @@
             });
         }
 
-        function selectOption(opt) {
+        function selectOption(opt, selectedBtn) {
+            // Förhindra omval
+            if (optionSelectedInCurrentScenario) return;
+            optionSelectedInCurrentScenario = true;
+
+            // Inaktivera alla valknappar för detta scenario och markera det valda
+            const allBtns = document.querySelectorAll('.option-btn');
+            allBtns.forEach(btn => {
+                btn.disabled = true;
+                btn.classList.add('opacity-40', 'cursor-not-allowed', 'hover:bg-slate-950/80');
+            });
+            selectedBtn.classList.remove('opacity-40');
+            selectedBtn.classList.add('ring-2', 'ring-emerald-500', 'bg-slate-800');
+
             ecoScore += opt.ecoDelta;
             econScore += opt.econDelta;
             socScore += opt.socDelta;
+            footprintVal += opt.fpDelta;
 
             playerChoices.push(opt.choiceText);
 
@@ -568,11 +593,11 @@
             document.getElementById('game-screen').classList.add('hidden');
             document.getElementById('summary-screen').classList.remove('hidden');
 
-            // 1. Footprint
-            let finalFootprint = (8.0 - (ecoScore / 100) * 4.0).toFixed(1);
+            // Visar slutgiltigt antal jordklot
+            let finalFootprint = footprintVal.toFixed(1);
             document.getElementById('final-footprint-text').innerText = finalFootprint;
 
-            // 2. Dina svar
+            // Lista över val
             const list = document.getElementById('choices-summary-list');
             list.innerHTML = '';
 
@@ -586,7 +611,7 @@
                 list.appendChild(item);
             });
 
-            // 3. Staplarna såsom det slutade
+            // Staplarna
             document.getElementById('sum-eco-val').innerText = ecoScore + "%";
             document.getElementById('sum-eco-bar').style.width = ecoScore + "%";
 
@@ -598,7 +623,6 @@
         }
 
         function restartGame() {
-            document.getElementById('summary-screen').classList.add('hidden');
             startGame();
         }
     </script>
