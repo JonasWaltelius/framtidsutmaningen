@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Framtidsutmaningen - Spelet om Hållbar Utveckling</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.3s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-between selection:bg-emerald-500 selection:text-slate-950">
+
+    <!-- TOP HEADER -->
+    <header id="main-header" class="border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-40">
+        <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="p-2 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                    <i class="fa-solid fa-earth-europe text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="font-extrabold text-base md:text-lg text-white leading-tight">Framtidsutmaningen</h1>
+                    <p class="text-xs text-slate-400">Spelet om Hållbar Utveckling</p>
+                </div>
+            </div>
+
+            <!-- JORDKLOT-RÄKNARE -->
+            <div id="footprint-pill" class="hidden sm:flex items-center gap-2 bg-slate-800/80 border border-slate-700 px-3 py-1.5 rounded-full text-xs font-semibold text-slate-300">
+                <i class="fa-solid fa-globe text-emerald-400"></i>
+                <span>Fotavtryck: <strong id="footprint-val" class="text-emerald-400 font-bold">4.0</strong> Jordklot</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- CONTAINER FOR SCREENS -->
+    <main class="max-w-4xl mx-auto px-4 py-6 w-full my-auto">
+
+        <!-- START SCREEN -->
+        <div id="start-screen" class="space-y-6 max-w-2xl mx-auto animate-fade-in">
+            <div class="bg-slate-900/60 border border-slate-800 rounded-2xl p-6 md:p-8 space-y-5">
+                <div class="space-y-2 text-center">
+                    <span class="px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs font-bold uppercase tracking-wider">Interaktivt Spel</span>
+                    <h2 class="text-2xl md:text-3xl font-black text-white">Välkommen till Framtidsutmaningen!</h2>
+                    <p class="text-slate-300 text-sm md:text-base leading-relaxed">
+                        I det här spelet kommer du att ställas inför 5 viktiga beslut där du måste navigera mellan målkonflikter gällande Ekologisk, Ekonomisk och Social hållbarhet.
+                    </p>
+                </div>
+
+                <!-- RUTA OM JORDKLOT OCH MÅL -->
+                <div class="bg-slate-950/80 border border-amber-500/30 rounded-xl p-4 space-y-2">
+                    <div class="flex items-center gap-2 text-amber-400 font-bold text-sm">
+                        <i class="fa-solid fa-earth-americas text-base"></i>
+                        <span>Visste du?</span>
+                    </div>
+                    <p class="text-slate-300 text-xs md:text-sm leading-relaxed">
+                        I Sverige förbrukar vi i genomsnitt resurser som motsvarar cirka <strong class="text-amber-300 font-bold">4 jordklot per år</strong>. Målet med denna övning är att undersöka hur våra beslut påverkar planeten och samhället!
+                    </p>
+                </div>
+
+                <div class="pt-2">
+                    <button onclick="startGame()" class="w-full py-4 px-6 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-slate-950 font-bold text-base shadow-lg shadow-emerald-950/40 transition active:scale-[0.99] flex items-center justify-center gap-2">
+                        <span>Starta Spelet</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- GAME SCREEN -->
+        <div id="game-screen" class="hidden space-y-6 animate-fade-in">
+
+            <!-- DASHBOARD STATUS -->
+            <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-4 shadow-xl space-y-3">
+                <div class="flex justify-between items-center text-xs font-bold text-slate-400">
+                    <span id="scenario-step-text">Scenario 1 av 5</span>
+                    <span class="sm:hidden text-emerald-400" id="footprint-mobile">4.0 Jordklot</span>
+                </div>
+
+                <div class="grid grid-cols-3 gap-3">
+                    <!-- Ekologisk -->
+                    <div class="bg-slate-950 p-3 rounded-xl border border-slate-800/80">
+                        <div class="flex justify-between items-center text-xs mb-1.5">
+                            <span class="text-emerald-400 font-bold"><i class="fa-solid fa-leaf mr-1"></i>Ekologisk</span>
+                            <span id="eco-val" class="text-slate-300 font-bold">50%</span>
+                        </div>
+                        <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+                            <div id="eco-bar" class="bg-emerald-500 h-full transition-all duration-500" style="width: 50%"></div>
+                        </div>
+                    </div>
+
+                    <!-- Ekonomisk -->
+                    <div class="bg-slate-950 p-3 rounded-xl border border-slate-800/80">
+                        <div class="flex justify-between items-center text-xs mb-1.5">
+                            <span class="text-blue-400 font-bold"><i class="fa-solid fa-coins mr-1"></i>Ekonomisk</span>
+                            <span id="econ-val" class="text-slate-300 font-bold">50%</span>
+                        </div>
+                        <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+                            <div id="econ-bar" class="bg-blue-500 h-full transition-all duration-500" style="width: 50%"></div>
+                        </div>
+                    </div>
+
+                    <!-- Social -->
+                    <div class="bg-slate-950 p-3 rounded-xl border border-slate-800/80">
+                        <div class="flex justify-between items-center text-xs mb-1.5">
+                            <span class="text-purple-400 font-bold"><i class="fa-solid fa-users mr-1"></i>Social</span>
+                            <span id="soc-val" class="text-slate-300 font-bold">50%</span>
+                        </div>
+                        <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+                            <div id="soc-bar" class="bg-purple-500 h-full transition-all duration-500" style="width: 50%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SCENARIO CARD -->
+            <div class="bg-slate-900/60 border border-slate-800 rounded-2xl p-5 md:p-6 space-y-4">
+                <div class="flex items-center justify-between gap-3">
+                    <div class="flex items-center gap-3">
+                        <div id="scenario-icon-box" class="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex items-center justify-center shrink-0 text-xl">
+                            <i id="scenario-icon" class="fa-solid fa-wheat-awn"></i>
+                        </div>
+                        <div>
+                            <span id="scenario-category" class="text-xs font-bold uppercase tracking-wider text-emerald-400">1. Stadsplanering</span>
+                            <h2 id="scenario-title" class="text-lg md:text-xl font-bold text-white leading-tight">Bygga på Östgötaslätten eller bevara åkrarna?</h2>
+                        </div>
+                    </div>
+
+                    <!-- SCENARIO IMAGE THUMBNAIL -->
+                    <div class="w-16 h-16 md:w-20 md:h-20 rounded-xl overflow-hidden shrink-0 border border-slate-700 bg-slate-950">
+                        <img id="scenario-img" src="" alt="Tema" class="w-full h-full object-cover" onerror="this.onerror=null; this.src='https://placehold.co/200x200/0f172a/10b981?text=Tema';">
+                    </div>
+                </div>
+
+                <p id="scenario-desc" class="text-sm md:text-base text-slate-300 leading-relaxed">
+                    Kommunen växer snabbt och behöver nya bostäder. Det enklaste är att bygga på Östgötaslättens bördiga åkermark. Hur gör vi?
+                </p>
+
+                <!-- OPTIONS CONTAINER (SIDE-BY-SIDE / HORIZONTAL GRID) -->
+                <div id="options-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 pt-2 items-stretch">
+                    <!-- Dynamiskt innehåll i samma höjd bredvid varandra -->
+                </div>
+            </div>
+
+            <!-- FEEDBACK PANEL (Visas efter val) -->
+            <div id="feedback-panel" class="hidden bg-slate-900 border border-slate-700 rounded-2xl p-5 space-y-4 shadow-xl animate-fade-in">
+                <div class="flex items-center gap-2 text-emerald-400 font-bold text-sm uppercase tracking-wide">
+                    <i class="fa-solid fa-circle-info"></i>
+                    <span>Vad blev konsekvensen?</span>
+                </div>
+
+                <p id="feedback-text" class="text-sm text-slate-200 leading-relaxed">
+                    Förklaring om konsekvenserna...
+                </p>
+
+                <div class="bg-slate-950 p-3.5 rounded-xl border border-slate-800 text-xs md:text-sm space-y-1">
+                    <div class="text-amber-400 font-bold flex items-center gap-1.5">
+                        <i class="fa-solid fa-lightbulb"></i>
+                        <span>Hållbarhetsfakta:</span>
+                    </div>
+                    <p id="fact-text" class="text-slate-300 leading-relaxed">
+                        Faktaruta...
+                    </p>
+                </div>
+
+                <button onclick="nextScenario()" class="w-full py-3 px-6 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-sm shadow-md transition active:scale-[0.99] flex items-center justify-center gap-2">
+                    <span>Nästa scenario</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+
+        </div>
+
+        <!-- SUMMARY SCREEN -->
+        <div id="summary-screen" class="hidden space-y-6 max-w-2xl mx-auto animate-fade-in">
+            <div class="bg-slate-900/60 border border-slate-800 rounded-2xl p-6 md:p-8 space-y-6">
+                
+                <div class="text-center space-y-2">
+                    <div class="inline-flex p-3 rounded-2xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 mb-1">
+                        <i class="fa-solid text-2xl fa-globe"></i>
+                    </div>
+                    
+                    <!-- 1. DU FÖRBRUKADE X ANTAL JORDKLOT -->
+                    <h2 class="text-2xl md:text-3xl font-black text-white">
+                        Du förbrukade <span id="final-footprint-text" class="text-emerald-400">4.0</span> jordklot.
+                    </h2>
+                </div>
+
+                <!-- 2. DINA SVAR VAR... -->
+                <div class="space-y-2">
+                    <h3 class="text-xs md:text-sm font-bold text-slate-400 uppercase tracking-wider">Dina svar var:</h3>
+                    <div id="choices-summary-list" class="bg-slate-950 border border-slate-800 rounded-xl p-4 space-y-3 text-xs md:text-sm">
+                        <!-- Fylls i med JS -->
+                    </div>
+                </div>
+
+                <!-- 3. BILD PÅ STAPLARNA SÅSOM DET SLUTADE -->
+                <div class="bg-slate-950 border border-slate-800 rounded-xl p-4 space-y-3">
+                    <h3 class="text-xs md:text-sm font-bold text-slate-400 uppercase tracking-wider">Mätarna efter dina beslut:</h3>
+                    
+                    <div class="space-y-2 text-xs">
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span class="text-emerald-400 font-bold"><i class="fa-solid fa-leaf mr-1"></i>Ekologisk hållbarhet</span>
+                                <span id="sum-eco-val" class="text-slate-300 font-bold">50%</span>
+                            </div>
+                            <div class="w-full bg-slate-800 h-2.5 rounded-full overflow-hidden">
+                                <div id="sum-eco-bar" class="bg-emerald-500 h-full" style="width: 50%"></div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span class="text-blue-400 font-bold"><i class="fa-solid fa-coins mr-1"></i>Ekonomisk hållbarhet</span>
+                                <span id="sum-econ-val" class="text-slate-300 font-bold">50%</span>
+                            </div>
+                            <div class="w-full bg-slate-800 h-2.5 rounded-full overflow-hidden">
+                                <div id="sum-econ-bar" class="bg-blue-500 h-full" style="width: 50%"></div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span class="text-purple-400 font-bold"><i class="fa-solid fa-users mr-1"></i>Social hållbarhet</span>
+                                <span id="sum-soc-val" class="text-slate-300 font-bold">50%</span>
+                            </div>
+                            <div class="w-full bg-slate-800 h-2.5 rounded-full overflow-hidden">
+                                <div id="sum-soc-bar" class="bg-purple-500 h-full" style="width: 50%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. TRE TIPS -->
+                <div class="bg-emerald-950/40 border border-emerald-500/30 rounded-xl p-4 space-y-3">
+                    <div class="flex items-center gap-2 text-emerald-400 font-bold text-sm md:text-base">
+                        <i class="fa-solid fa-lightbulb"></i>
+                        <span>Tre tips:</span>
+                    </div>
+                    <ul class="text-slate-300 text-xs md:text-sm space-y-2 leading-relaxed">
+                        <li class="flex items-start gap-2">
+                            <span class="text-emerald-400 font-bold">•</span>
+                            <span>Det är svårt att balansera alla beslut med vilka konsekvenser de får</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-emerald-400 font-bold">•</span>
+                            <span>Det är viktigt att fundera på sina beslut</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-emerald-400 font-bold">•</span>
+                            <span>Kanske kan du vara med och hjälpa till?</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <button onclick="restartGame()" class="w-full py-3.5 px-6 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-sm border border-slate-700 transition active:scale-[0.99] flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-rotate-right"></i>
+                    <span>Spela igen</span>
+                </button>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="border-t border-slate-800/80 bg-slate-950 py-3 text-center text-xs text-slate-500">
+        Framtidsutmaningen – Hållbar utveckling för högstadiet
+    </footer>
+
+    <!-- JAVASCRIPT GAME LOGIC -->
+    <script>
+        const scenarios = [
+            {
+                id: 1,
+                category: "1. Stadsplanering",
+                title: "Bygga på Östgötaslätten eller bevara åkrarna?",
+                icon: "fa-wheat-awn",
+                image: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=300&q=80",
+                desc: "Kommunen växer snabbt och behöver nya bostäder. Det enklaste är att bygga på Östgötaslättens bördiga åkermark. Hur gör vi?",
+                options: [
+                    {
+                        title: "Bygg nya bostadsområden på åkermarken",
+                        pros: "Skapar nya bostäder i kommunen snabbt",
+                        cons: "Minskar ytan där vi kan odla mat",
+                        ecoDelta: -20, econDelta: +15, socDelta: +15,
+                        feedback: "Att bygga på åkermark ger bostäder och ekonomisk tillväxt, men förstör obrukbar jordbruksmark vilket försvårar matförsörjningen.",
+                        fact: "I Skåne och Östergötland försvinner mycket bördig åkermark varje år trots beslut om skydd.",
+                        choiceText: "Byggde nya bostäder på bördig åkermark."
+                    },
+                    {
+                        title: "Säg nej – skydda all åkermark och förtäta staden",
+                        pros: "Bevarar matproduktionen och den biologiska mångfalden",
+                        cons: "Det blir dyrare och svårare att bygga inne i staden",
+                        ecoDelta: +15, econDelta: -10, socDelta: -5,
+                        feedback: "Att skydda matjorden säkrar ekologin, men att förtäta staden gör bostadsbyggandet dyrare och tar längre tid.",
+                        fact: "Sverige importerar mycket mat. Att bevara jordbruksmark stärka vår egen självförsörjning.",
+                        choiceText: "Bevarade åkermarken och valde att förtäta staden istället."
+                    }
+                ]
+            },
+            {
+                id: 2,
+                category: "2. Mat & Skola",
+                title: "Skolmaten: Kött eller vegetariskt?",
+                icon: "fa-utensils",
+                image: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=300&q=80",
+                desc: "Matsalen vill minska sin miljöpåverkan. Hur ska menyn utformas för eleverna?",
+                options: [
+                    {
+                        title: "Servera kötträtter 4 dagar i veckan",
+                        pros: "Välkänt och gott bland många",
+                        cons: "Ger höga utsläpp och stor vattenförbrukning",
+                        ecoDelta: -20, econDelta: -5, socDelta: +10,
+                        feedback: "Kött gillas av många elever, men uppfödning av boskap kräver mycket mark och vatten samt ger växthusgaser.",
+                        fact: "Det går åt ca 15 000 liter vatten för att producera 1 kg nötkött.",
+                        choiceText: "Behöll köttdominerad meny i matsalen."
+                    },
+                    {
+                        title: "Inför vegetariskt som standard med 1 köttdag",
+                        pros: "Minskar utsläpp och sparar jättemycket vatten",
+                        cons: "En del elever kan bli missnöjda i början",
+                        ecoDelta: +20, econDelta: +10, socDelta: -5,
+                        feedback: "Vegetarisk mat minskar det ekologiska fotavtrycket kraftigt och sparar dessutom pengar för skolan.",
+                        fact: "Växtbaserad mat kräver betydligt mindre mark och vatten än köttproduktion.",
+                        choiceText: "Satsade på vegetarisk mat som standard i matsalen."
+                    },
+                    {
+                        title: "Hälften av alla måltider är vegetariska och hälften kött",
+                        pros: "Ett mellanting av A+B",
+                        cons: "Miljön drabbas fortfarande och köttälskarna klagar",
+                        ecoDelta: 0, econDelta: +5, socDelta: 0,
+                        feedback: "Att dela upp menyn 50/50 är en kompromiss. Miljöpåverkan minskar något, men förändringen blir mindre märkbar för planeten.",
+                        fact: "Kompromisser kan göra det lättare för alla att acceptera förändringar stegvis.",
+                        choiceText: "Valde att dela upp menyn 50/50 mellan vegetariskt och kött."
+                    }
+                ]
+            },
+            {
+                id: 3,
+                category: "3. Digitala Verktyg",
+                title: "Chromebooks i skolan",
+                icon: "fa-laptop",
+                image: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=300&q=80",
+                desc: "Alla elever behöver datorer i skolan. Tillverkningen kräver sällsynta metaller och energi. Hur gör vi?",
+                options: [
+                    {
+                        title: "Köp in nya Chromebooks till alla elever vart 3:e år",
+                        pros: "Alla får alltid ny och snabb teknik",
+                        cons: "Alla får inte den senaste modellen och det skapar elavfall",
+                        ecoDelta: -15, econDelta: -15, socDelta: +15,
+                        feedback: "Nybryggda datorer ger goda förutsättningar för studier, men ökar metallbrytningen och avfallsmängden.",
+                        fact: "Elektronik innehåller sällsynta metaller som ofta bryts under svåra arbetsförhållanden.",
+                        choiceText: "Köpte in nya Chromebooks regelbundet till alla."
+                    },
+                    {
+                        title: "Reparera och återanvänd datorer så länge det går",
+                        pros: "Minskar brytning av metaller och sparar pengar",
+                        cons: "Vissa datorer kan bli långsammare med tiden",
+                        ecoDelta: +15, econDelta: +10, socDelta: -5,
+                        feedback: "Att laga och behålla Chromebooks längre sparar på resurserna och minskar elavfallet.",
+                        fact: "Mängden elavfall i världen ökar snabbt. Reparation är ett viktigt steg uppåt i avfallstrappan.",
+                        choiceText: "Satsade på att reparera och återanvända Chromebooks längre."
+                    },
+                    {
+                        title: "Sluta med Chromebooks på skolan",
+                        pros: "Minskar brytning av metaller och avfall",
+                        cons: "Vi hamnar efter i utveckling och måste använda annat material",
+                        ecoDelta: +20, econDelta: -10, socDelta: -15,
+                        feedback: "Att helt ta bort datorer minskar den ekologiska belastningen men försvårar den digitala undervisningen.",
+                        fact: "Digital kompetens ingår i läroplanen, vilket gör valet till en tydlig målkonflikt.",
+                        choiceText: "Slutade helt med Chromebooks i skolan."
+                    }
+                ]
+            },
+            {
+                id: 4,
+                category: "4. Konsumtion",
+                title: "Klädindustrin och virtuellt vatten",
+                icon: "fa-shirt",
+                image: "https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?auto=format&fit=crop&w=300&q=80",
+                desc: "Tillverkning av kläder kräver gigantiska mängder vatten och kemikalier. Hur ska vi hantera klädkonsumtionen?",
+                options: [
+                    {
+                        title: "Köp nya billiga kläder ofta (Fast Fashion)",
+                        pros: "Billigt för stunden och upplevs som trendigt",
+                        cons: "Förbrukar enormt mycket osynligt (virtuellt) vatten",
+                        ecoDelta: -20, econDelta: -5, socDelta: +5,
+                        feedback: "Billiga snabba klädköp slösar på vattenresurser i länder som ofta redan har vattenbrist.",
+                        fact: "Det går åt ca 2 500 liter vatten för att tillverka en enda t-shirt.",
+                        choiceText: "Kände för billigt nyköp av kläder (Fast Fashion)."
+                    },
+                    {
+                        title: "Satsa på Second Hand och att laga kläder",
+                        pros: "Sparar jättemycket vatten och minskar avfall",
+                        cons: "Svårt att hitta och ganska slitet",
+                        ecoDelta: +20, econDelta: +10, socDelta: 0,
+                        feedback: "Att köpa begagnat eller laga plagg minskar det ekologiska fotavtrycket direkt, även om det kan kräva mer letande.",
+                        fact: "Att förlänga ett plaggs livslängd med det dubbla minskar dess klimatpåverkan med nästan hälften.",
+                        choiceText: "Satsade på Second Hand och att laga befintliga kläder."
+                    },
+                    {
+                        title: "Begränsa nya klädinköp till tre plagg / person och månad",
+                        pros: "Du får nya kläder och sparar på produktion",
+                        cons: "Fortsatt nyproduktion och begränsat urval",
+                        ecoDelta: +5, econDelta: 0, socDelta: -5,
+                        feedback: "Ett tak på nyköp begränsar den värsta överkonsumtionen men tillåter fortfarande viss nyproduktion.",
+                        fact: "Konsumtionsbegränsningar sänker avtrycket utan att stoppa handeln helt.",
+                        choiceText: "Begränsade nya klädinköp till max tre plagg per person och månad."
+                    }
+                ]
+            },
+            {
+                id: 5,
+                category: "5. Avfallshantering",
+                title: "Återvinna eller deponera?",
+                icon: "fa-trash-can",
+                image: "https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?auto=format&fit=crop&w=300&q=80",
+                desc: "Vad gör vi med allt avfall som uppstår i samhället när sakerna inte längre kan användas?",
+                options: [
+                    {
+                        title: "Sopsortera och återvinn materialet",
+                        pros: "Materialet kan användas igen till nya produkter",
+                        cons: "Kräver sortering och transport",
+                        ecoDelta: +15, econDelta: +5, socDelta: +5,
+                        feedback: "Materialåtervinning sparar råvaror och energi jämfört med att utvinna helt nya resurser.",
+                        fact: "Steg 3 i Avfallstrappan innebär materialåtervinning när saker inte kan återanvändas.",
+                        choiceText: "Sopsorterade och återvann materialet."
+                    },
+                    {
+                        title: "Bränn upp avfallet för att få fjärrvärme och el",
+                        pros: "Ge energi och värme till bostäder",
+                        cons: "Skapar stora utsläpp",
+                        ecoDelta: -5, econDelta: +10, socDelta: +5,
+                        feedback: "Energiutvinning ger värme, men förbränning ger utsläpp och materialet går förlorat för framtiden.",
+                        fact: "Energiutvinning ligger på steg 4 i Avfallstrappan, under återanvändning och återvinning.",
+                        choiceText: "Skickade avfallet till förbränning för energiutvinning."
+                    },
+                    {
+                        title: "Kasta allt blandat på soptippen (deponi)",
+                        pros: "Enkelt och billigt på kort sikt",
+                        cons: "Förstör miljön och slösar bort alla resurser",
+                        ecoDelta: -25, econDelta: -10, socDelta: -10,
+                        feedback: "Deponi på soptipp är det sämsta alternativet i Avfallstrappan och läcker ofta giftiga ämnen.",
+                        fact: "Deponering ligger längst ner på Avfallstrappan och ska i största möjliga mån undvikas.",
+                        choiceText: "Slängde avfallet på soptippen (deponi)."
+                    }
+                ]
+            }
+        ];
+
+        let currentScenarioIndex = 0;
+        let ecoScore = 50;
+        let econScore = 50;
+        let socScore = 50;
+        let playerChoices = [];
+
+        function startGame() {
+            document.getElementById('start-screen').classList.add('hidden');
+            document.getElementById('game-screen').classList.remove('hidden');
+            document.getElementById('footprint-pill').classList.remove('hidden');
+            currentScenarioIndex = 0;
+            ecoScore = 50;
+            econScore = 50;
+            socScore = 50;
+            playerChoices = [];
+            updateUI();
+            loadScenario();
+        }
+
+        function updateUI() {
+            ecoScore = Math.max(0, Math.min(100, ecoScore));
+            econScore = Math.max(0, Math.min(100, econScore));
+            socScore = Math.max(0, Math.min(100, socScore));
+
+            document.getElementById('eco-val').innerText = ecoScore + "%";
+            document.getElementById('eco-bar').style.width = ecoScore + "%";
+
+            document.getElementById('econ-val').innerText = econScore + "%";
+            document.getElementById('econ-bar').style.width = econScore + "%";
+
+            document.getElementById('soc-val').innerText = socScore + "%";
+            document.getElementById('soc-bar').style.width = socScore + "%";
+
+            let footprint = (8.0 - (ecoScore / 100) * 4.0).toFixed(1);
+            document.getElementById('footprint-val').innerText = footprint;
+            document.getElementById('footprint-mobile').innerText = footprint + " Jordklot";
+        }
+
+        function loadScenario() {
+            document.getElementById('feedback-panel').classList.add('hidden');
+            
+            const sc = scenarios[currentScenarioIndex];
+            document.getElementById('scenario-step-text').innerText = `Scenario ${currentScenarioIndex + 1} av ${scenarios.length}`;
+            document.getElementById('scenario-category').innerText = sc.category;
+            document.getElementById('scenario-title').innerText = sc.title;
+            document.getElementById('scenario-desc').innerText = sc.desc;
+            document.getElementById('scenario-icon').className = `fa-solid ${sc.icon}`;
+            document.getElementById('scenario-img').src = sc.image;
+
+            const container = document.getElementById('options-container');
+            container.innerHTML = '';
+
+            // Dynamic grid cols depending on number of options (2 or 3)
+            const gridColsClass = sc.options.length === 2 ? 'sm:grid-cols-2' : 'sm:grid-cols-3';
+            container.className = `grid grid-cols-1 ${gridColsClass} gap-3 pt-2 items-stretch`;
+
+            sc.options.forEach((opt, idx) => {
+                const letter = String.fromCharCode(65 + idx);
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left bg-slate-950/80 hover:bg-slate-800 border border-slate-800 hover:border-slate-700 p-3 md:p-4 rounded-xl transition active:scale-[0.99] flex flex-col justify-between h-full space-y-2";
+                btn.onclick = () => selectOption(opt);
+
+                btn.innerHTML = `
+                    <div class="space-y-1.5">
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs font-bold text-emerald-400">Alternativ ${letter}</span>
+                        </div>
+                        <div class="text-xs md:text-sm font-semibold text-white leading-snug">${opt.title}</div>
+                    </div>
+                    <div class="text-xs text-slate-300 space-y-1 pt-1 border-t border-slate-800/80">
+                        <div class="text-emerald-400 font-medium">+ ${opt.pros}</div>
+                        <div class="text-rose-400 font-medium">- ${opt.cons}</div>
+                    </div>
+                `;
+                container.appendChild(btn);
+            });
+        }
+
+        function selectOption(opt) {
+            ecoScore += opt.ecoDelta;
+            econScore += opt.econDelta;
+            socScore += opt.socDelta;
+
+            playerChoices.push(opt.choiceText);
+
+            updateUI();
+
+            document.getElementById('feedback-text').innerText = opt.feedback;
+            document.getElementById('fact-text').innerText = opt.fact;
+            document.getElementById('feedback-panel').classList.remove('hidden');
+
+            document.getElementById('feedback-panel').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function nextScenario() {
+            currentScenarioIndex++;
+            if (currentScenarioIndex < scenarios.length) {
+                loadScenario();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                showSummary();
+            }
+        }
+
+        function showSummary() {
+            document.getElementById('game-screen').classList.add('hidden');
+            document.getElementById('summary-screen').classList.remove('hidden');
+
+            // 1. Footprint
+            let finalFootprint = (8.0 - (ecoScore / 100) * 4.0).toFixed(1);
+            document.getElementById('final-footprint-text').innerText = finalFootprint;
+
+            // 2. Dina svar
+            const list = document.getElementById('choices-summary-list');
+            list.innerHTML = '';
+
+            playerChoices.forEach((choice, idx) => {
+                const item = document.createElement('div');
+                item.className = "flex items-start gap-2.5 p-2.5 rounded-lg bg-slate-900 border border-slate-800/80";
+                item.innerHTML = `
+                    <span class="bg-slate-800 text-slate-300 w-5 h-5 rounded-full flex items-center justify-center shrink-0 text-[10px] font-bold mt-0.5">${idx + 1}</span>
+                    <span class="text-slate-200 leading-relaxed">${choice}</span>
+                `;
+                list.appendChild(item);
+            });
+
+            // 3. Staplarna såsom det slutade
+            document.getElementById('sum-eco-val').innerText = ecoScore + "%";
+            document.getElementById('sum-eco-bar').style.width = ecoScore + "%";
+
+            document.getElementById('sum-econ-val').innerText = econScore + "%";
+            document.getElementById('sum-econ-bar').style.width = econScore + "%";
+
+            document.getElementById('sum-soc-val').innerText = socScore + "%";
+            document.getElementById('sum-soc-bar').style.width = socScore + "%";
+        }
+
+        function restartGame() {
+            document.getElementById('summary-screen').classList.add('hidden');
+            startGame();
+        }
+    </script>
+</body>
+</html>
